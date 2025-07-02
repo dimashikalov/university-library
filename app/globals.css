@@ -282,6 +282,10 @@
   .library-title {
     @apply mt-2 text-3xl font-semibold text-white xs:text-5xl;
   }
+
+  .toast {
+    @apply bg-gray-700 text-white p-4 rounded-lg shadow-lg;
+  }
 }
 
 @layer base {

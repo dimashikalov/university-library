@@ -24,6 +24,8 @@ import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { FIELD_NAMES, FIELD_TYPES } from '@/constants';
 import ImageUploader from './ImageUploader';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 interface Props<T extends FieldValues> {
   schema: ZodType<T, any>;
@@ -38,6 +40,8 @@ const AuthForm = <T extends FieldValues>({
   defaultValues,
   onSubmit,
 }: Props<T>) => {
+  const router = useRouter();
+
   const isSignIn = type === 'SIGN_IN';
 
   const form: UseFormReturn<T> = useForm({
@@ -45,7 +49,43 @@ const AuthForm = <T extends FieldValues>({
     defaultValues: defaultValues as DefaultValues<T>,
   });
 
-  const handleSubmit: SubmitHandler<T> = async (data) => {};
+  const handleSubmit: SubmitHandler<T> = async (data) => {
+    const result = await onSubmit(data);
+
+    if (result.success) {
+      toast('Success', {
+        description: isSignIn
+          ? 'You have successfully signed in.'
+          : 'You have successfully signed up.',
+        position: 'bottom-right',
+        duration: 3000,
+        onDismiss: () => console.log('Уведомление закрыто'),
+        style: {
+          backgroundColor: '#4B5563', // Темный фон
+          color: '#FFFFFF', // Белый текст
+          padding: '16px',
+          borderRadius: '8px',
+          boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+        },
+      });
+
+      router.push('/');
+    } else {
+      toast(`Error ${isSignIn ? 'signing in' : 'signing up'}`, {
+        description: result.error ?? 'An error occurred.',
+        position: 'bottom-right',
+        duration: 3000,
+        onDismiss: () => console.log('Уведомление закрыто'),
+        style: {
+          backgroundColor: '#4B5563', // Темный фон
+          color: 'red',
+          padding: '16px',
+          borderRadius: '8px',
+          boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+        },
+      });
+    }
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -60,7 +100,7 @@ const AuthForm = <T extends FieldValues>({
       </p>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(handleSubmit)}
           className="space-y-6 w-full"
         >
           {Object.keys(defaultValues).map((field) => (

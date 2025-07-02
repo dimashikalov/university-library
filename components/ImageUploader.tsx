@@ -151,10 +151,6 @@ const ImageUploader = ({ onFileChange }: Props) => {
         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
       },
     });
-    // toast({
-    //   title: `${type} uploaded successfully`,
-    //   description: `${res.filePath} uploaded successfully!`,
-    // });
   };
 
   return (
