@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 
 const Layout = async ({ children }: { children: ReactNode }) => {
   const session = await auth();
-  console.log('auth session ', session);
+
   if (session) redirect('/');
 
   return (

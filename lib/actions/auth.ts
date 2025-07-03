@@ -10,7 +10,6 @@ export const signInWithCredentials = async (
   params: Pick<AuthCredentials, 'email' | 'password'>
 ) => {
   const { email, password } = params;
-
   try {
     const result = await signIn('credentials', {
       email,
@@ -24,7 +23,6 @@ export const signInWithCredentials = async (
 
     return { success: true };
   } catch (error) {
-    console.log(error, 'Signin error');
     return { success: false, error: 'Signin error' };
   }
 };
@@ -56,7 +54,6 @@ export const signUp = async (params: AuthCredentials) => {
     await signInWithCredentials({ email, password });
     return { success: true };
   } catch (error) {
-    console.log(error, 'Signup error');
     return { success: false, error: 'Signup error' };
   }
 };
