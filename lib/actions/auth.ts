@@ -8,7 +8,7 @@ import { eq } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import ratelimit from '@/lib/ratelimit';
 import { redirect } from 'next/navigation';
-import { workflowClient } from '../workflow';
+import { workflowClient } from '@/lib/workflow';
 import config from '@/lib/config';
 
 const handlerTooFast = async () => {
@@ -77,10 +77,13 @@ export const signUp = async (params: AuthCredentials) => {
     });
 
     await workflowClient.trigger({
-      url: `${config.env.prodApiEndpoint}/api/workflows/onboarding`,
+      url: `${config.env.prodApiEndpoint}/api/workflow/onboarding`,
       body: {
         email,
         fullName,
+      },
+      headers: {
+        'Content-Type': 'application/json',
       },
     });
 
