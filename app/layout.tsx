@@ -30,7 +30,6 @@ export const metadata: Metadata = {
 
 const RootLayout = async ({ children }: { children: ReactNode }) => {
   const session = await auth();
-  console.log('root ', session);
 
   return (
     <html lang="en">
